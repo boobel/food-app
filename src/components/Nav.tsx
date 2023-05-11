@@ -23,7 +23,7 @@ const StyledList = styled.ul`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: #afa2a2;
+  color: #ffffff;
 
   &:focus,
   &:hover,
@@ -31,7 +31,6 @@ const StyledLink = styled(Link)`
   &:link,
   &:active {
     text-decoration: none;
-    color: #afa2a2;
   }
 `;
 export { Nav };

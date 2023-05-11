@@ -33,7 +33,8 @@ const StyledSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 3rem;
+  padding-bottom: 3rem;
 `;
 
 export { Explore };

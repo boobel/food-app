@@ -3,7 +3,7 @@ import { mealProps } from "../interfaces/props";
 import { FoodContext } from "../context/FoodContext";
 import styled from "styled-components";
 
-const MealCard: React.FC<mealProps> = ({
+const FavouriteMealCard: React.FC<mealProps> = ({
   title,
   ingredients,
   instructions,
@@ -11,7 +11,7 @@ const MealCard: React.FC<mealProps> = ({
 }) => {
   const [ingredientsArr, setIngredientsArr] = useState<string[]>([]);
   const timeArr = [10, 15, 25, 30, 35, 40, 45, 60, 75, 90];
-  const diffArr = ["easy", "intermidiate", "hard"];
+  const diffArr = ["easy", "intermediate", "hard"];
   const { foodData, favouriteFoodData, updateFavouriteFoodData } =
     useContext(FoodContext);
 
@@ -19,25 +19,26 @@ const MealCard: React.FC<mealProps> = ({
     return Math.floor(Math.random() * max);
   };
 
+  const handleDelete = () => {
+    const updatedFavouriteFoodData = favouriteFoodData.filter(
+      (meal) => meal.title !== title
+    );
+    updateFavouriteFoodData(updatedFavouriteFoodData);
+  };
+
   useEffect(() => {
     setIngredientsArr(ingredients.split("|"));
   }, [ingredients]);
 
-  const handleClick = () => {
-    const currentFood = foodData.find((food) => food.title === title);
-
-    if (
-      currentFood &&
-      !favouriteFoodData.some((food) => food.title === title)
-    ) {
-      updateFavouriteFoodData([...favouriteFoodData, currentFood]);
-    } else {
-      alert("This recipe is already in your favourites");
-    }
-  };
-
   return (
     <StyledCard>
+      <StyledCloseButton
+        onClick={() => {
+          handleDelete();
+        }}
+      >
+        &times;
+      </StyledCloseButton>
       <StyledTitle>{title}</StyledTitle>
       <StyledSection>
         <StyledServings>{servings}</StyledServings>
@@ -50,18 +51,12 @@ const MealCard: React.FC<mealProps> = ({
         })}
       </StyledIngridients>
       <StyledInstructions>{instructions}</StyledInstructions>
-      <StyledButton
-        onClick={() => {
-          handleClick();
-        }}
-      >
-        Add To Favourites
-      </StyledButton>
     </StyledCard>
   );
 };
 
 const StyledCard = styled.article`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -72,23 +67,6 @@ const StyledCard = styled.article`
   box-sizing: border-box;
   background-color: #ffffff;
   box-shadow: 25px 25px black;
-`;
-
-const StyledButton = styled.button`
-  width: fit-content;
-  margin: 0 auto;
-  background-color: #74716f;
-  color: #ffffff;
-  border: none;
-  padding: 0.5rem;
-  transition: all 0.3s ease-in;
-  &:hover {
-    background-color: #bebebe;
-  }
-  &:active {
-    transform: translateY(4px);
-    transition-duration: 0.05s;
-  }
 `;
 
 const StyledTitle = styled.h2`
@@ -109,4 +87,13 @@ const StyledSection = styled.section`
   width: 75%;
 `;
 
-export { MealCard };
+const StyledCloseButton = styled.button`
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+`;
+
+export { FavouriteMealCard };

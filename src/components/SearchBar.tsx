@@ -45,9 +45,8 @@ const StyledSearchBar = styled.div`
 const StyledInput = styled.input`
   padding: 1rem;
   border: none;
-  background-color: #b99393;
-  color: #ebd5c2;
-  border-radius: 0.5rem;
+  background-color: #ffffff;
+  color: #d4d1ce;
 `;
 
 export { SearchBar };
