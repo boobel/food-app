@@ -1,18 +1,13 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { mealProps } from "../interfaces/props";
+import { mealProps, FoodContextProps } from "../interfaces/props";
 
-type FoodContextType = {
-  foodData: mealProps[];
-  favouriteFoodData: mealProps[];
-  updateFoodData: (data: mealProps[]) => void;
-  updateFavouriteFoodData: (data: mealProps[]) => void;
-};
-
-const FoodContext = createContext<FoodContextType>({
+const FoodContext = createContext<FoodContextProps>({
   foodData: [],
   favouriteFoodData: [],
   updateFoodData: () => {},
   updateFavouriteFoodData: () => {},
+  timeArr: [],
+  diffArr: [],
 });
 
 type FoodContextProviderProps = {
@@ -22,13 +17,21 @@ type FoodContextProviderProps = {
 const FoodContextProvider = ({ children }: FoodContextProviderProps) => {
   const [foodData, setFoodData] = useState<mealProps[]>([]);
   const [favouriteFoodData, setFavouriteFoodData] = useState<mealProps[]>([]);
+  const timeArr = [10, 15, 25, 30, 35, 40, 45, 60, 75, 90];
+  const diffArr = ["easy", "intermediate", "hard"];
 
   const updateFoodData = (data: mealProps[]) => {
     setFoodData(data);
   };
 
   const updateFavouriteFoodData = (data: mealProps[]) => {
-    setFavouriteFoodData(data);
+    const updatedData = data.map((meal) => ({
+      ...meal,
+      time: timeArr[Math.floor(Math.random() * timeArr.length)],
+      difficulty: diffArr[Math.floor(Math.random() * diffArr.length)],
+    }));
+
+    setFavouriteFoodData(updatedData);
   };
 
   useEffect(() => {
@@ -66,6 +69,8 @@ const FoodContextProvider = ({ children }: FoodContextProviderProps) => {
         favouriteFoodData,
         updateFoodData,
         updateFavouriteFoodData,
+        timeArr,
+        diffArr,
       }}
     >
       {children}

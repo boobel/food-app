@@ -10,5 +10,6 @@ const Header: React.FC = () => {
 
 const StyledHeader = styled.header`
   text-align: center;
+  color: white;
 `;
 export { Header };

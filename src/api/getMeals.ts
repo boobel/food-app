@@ -1,13 +1,19 @@
 const getFood = async (food: string) => {
+  const API_KEY = process.env.REACT_APP_API_KEY;
   const url = `https://recipe-by-api-ninjas.p.rapidapi.com/v1/recipe?query=${food}`;
-  const options = {
-    method: "GET",
-    headers: {
-      "X-RapidAPI-Key": "106698b678msh975a603c9c65e01p1e30f2jsn6179ca662ea4",
-      "X-RapidAPI-Host": "recipe-by-api-ninjas.p.rapidapi.com",
-    },
+  const headers: Record<string, string> = {
+    "X-RapidAPI-Host": "recipe-by-api-ninjas.p.rapidapi.com",
   };
 
+  if (API_KEY) {
+    headers["X-RapidAPI-Key"] = API_KEY;
+  }
+
+  const options = {
+    method: "GET",
+    headers: headers,
+  };
+  console.log(API_KEY);
   const response = await fetch(url, options);
   const result = await response.json();
   console.log(result);

@@ -1,13 +1,23 @@
-import { Link } from "react-router-dom";
+import { NavLink, NavLinkProps } from "react-router-dom";
 import styled from "styled-components";
+
+interface StyledLinkProps extends NavLinkProps {
+  activeclassname: string;
+}
 
 const Nav: React.FC = () => {
   return (
     <>
       <StyledList>
-        <StyledLink to="/">Home</StyledLink>
-        <StyledLink to="/recipes">My Recipes</StyledLink>
-        <StyledLink to="/explore">Explore</StyledLink>
+        <StyledLink to="/" activeclassname="active">
+          Home
+        </StyledLink>
+        <StyledLink to="/recipes" activeclassname="active">
+          My Recipes
+        </StyledLink>
+        <StyledLink to="/explore" activeclassname="active">
+          Explore
+        </StyledLink>
       </StyledList>
     </>
   );
@@ -21,16 +31,23 @@ const StyledList = styled.ul`
   gap: 1rem;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(NavLink)<StyledLinkProps>`
+  position: relative;
   text-decoration: none;
   color: #ffffff;
 
-  &:focus,
-  &:hover,
-  &:visited,
-  &:link,
-  &:active {
-    text-decoration: none;
+  &.active {
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    color: #ffffff;
+    text-decoration: underline;
   }
 `;
+
 export { Nav };

@@ -3,6 +3,7 @@ import { Header } from "../components/Header";
 import { Nav } from "../components/Nav";
 import { FoodContext } from "../context/FoodContext";
 import { FavouriteMealCard } from "../components/FavouriteMealCard";
+import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 
 const Recipes: React.FC = () => {
@@ -19,6 +20,9 @@ const Recipes: React.FC = () => {
               ingredients={item.ingredients}
               servings={item.servings}
               instructions={item.instructions}
+              time={item.time}
+              difficulty={item.difficulty}
+              key={uuidv4()}
             />
           );
         })}

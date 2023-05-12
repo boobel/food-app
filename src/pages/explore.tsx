@@ -4,6 +4,7 @@ import { Nav } from "../components/Nav";
 import { SearchBar } from "../components/SearchBar";
 import { FoodContext } from "../context/FoodContext";
 import { MealCard } from "../components/MealCard";
+import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 
 const Explore: React.FC = () => {
@@ -21,6 +22,9 @@ const Explore: React.FC = () => {
               ingredients={item.ingredients}
               servings={item.servings}
               instructions={item.instructions}
+              difficulty={item.difficulty}
+              time={item.time}
+              key={uuidv4()}
             />
           );
         })}

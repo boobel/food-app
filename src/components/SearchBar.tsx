@@ -46,7 +46,7 @@ const StyledInput = styled.input`
   padding: 1rem;
   border: none;
   background-color: #ffffff;
-  color: #d4d1ce;
+  color: black;
 `;
 
 export { SearchBar };

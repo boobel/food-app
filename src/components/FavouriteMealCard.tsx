@@ -8,16 +8,14 @@ const FavouriteMealCard: React.FC<mealProps> = ({
   ingredients,
   instructions,
   servings,
+  difficulty,
+  time,
 }) => {
   const [ingredientsArr, setIngredientsArr] = useState<string[]>([]);
-  const timeArr = [10, 15, 25, 30, 35, 40, 45, 60, 75, 90];
-  const diffArr = ["easy", "intermediate", "hard"];
-  const { foodData, favouriteFoodData, updateFavouriteFoodData } =
+  const [editedInstructions, setEditedInstructions] = useState(instructions);
+  const [editMode, setEditMode] = useState(false);
+  const { favouriteFoodData, updateFavouriteFoodData } =
     useContext(FoodContext);
-
-  const getRandomInt = (max: number) => {
-    return Math.floor(Math.random() * max);
-  };
 
   const handleDelete = () => {
     const updatedFavouriteFoodData = favouriteFoodData.filter(
@@ -26,31 +24,72 @@ const FavouriteMealCard: React.FC<mealProps> = ({
     updateFavouriteFoodData(updatedFavouriteFoodData);
   };
 
+  const toggleEditMode = () => {
+    if (editMode) {
+      const updatedFavouriteFoodData = favouriteFoodData.map((meal) => {
+        if (meal.title === title) {
+          return {
+            ...meal,
+            instructions: editedInstructions,
+            ingredients: ingredientsArr.join("|"),
+          };
+        }
+        return meal;
+      });
+      updateFavouriteFoodData(updatedFavouriteFoodData);
+    }
+    setEditMode(!editMode);
+  };
+
   useEffect(() => {
-    setIngredientsArr(ingredients.split("|"));
+    const initialIngredients = ingredients.split("|");
+    setIngredientsArr(initialIngredients);
   }, [ingredients]);
 
   return (
     <StyledCard>
-      <StyledCloseButton
-        onClick={() => {
-          handleDelete();
-        }}
-      >
-        &times;
-      </StyledCloseButton>
+      <StyledCloseButton onClick={handleDelete}>&times;</StyledCloseButton>
       <StyledTitle>{title}</StyledTitle>
       <StyledSection>
         <StyledServings>{servings}</StyledServings>
-        <span>Time: {timeArr[getRandomInt(timeArr.length)]} min.</span>
-        <span>Difficulty: {diffArr[getRandomInt(diffArr.length)]}</span>
+        <span>Time: {time} min.</span>
+        <span>Difficulty: {difficulty}</span>
       </StyledSection>
-      <StyledIngridients>
-        {ingredientsArr.map((item) => {
-          return <li>{item}</li>;
-        })}
-      </StyledIngridients>
-      <StyledInstructions>{instructions}</StyledInstructions>
+      {editMode ? (
+        <StyledIngredients>
+          {ingredientsArr.map((item, index) => (
+            <li key={index}>
+              <input
+                type="text"
+                value={item}
+                onChange={(e) => {
+                  const updatedIngredientsArr = [...ingredientsArr];
+                  updatedIngredientsArr[index] = e.target.value;
+                  setIngredientsArr(updatedIngredientsArr);
+                }}
+              />
+            </li>
+          ))}
+        </StyledIngredients>
+      ) : (
+        <StyledIngredients>
+          {ingredientsArr.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </StyledIngredients>
+      )}
+      {editMode ? (
+        <StyledTextArea
+          value={editedInstructions}
+          onChange={(e) => setEditedInstructions(e.target.value)}
+        />
+      ) : (
+        <StyledInstructions>{editedInstructions}</StyledInstructions>
+      )}
+
+      <StyledEditButton onClick={toggleEditMode}>
+        {editMode ? "Save Recipe" : "Edit Recipe"}
+      </StyledEditButton>
     </StyledCard>
   );
 };
@@ -77,7 +116,7 @@ const StyledInstructions = styled.span``;
 
 const StyledServings = styled.span``;
 
-const StyledIngridients = styled.ul``;
+const StyledIngredients = styled.ul``;
 
 const StyledSection = styled.section`
   display: flex;
@@ -94,6 +133,30 @@ const StyledCloseButton = styled.button`
   background: none;
   border: none;
   font-size: 1.5rem;
+  cursor: pointer;
+`;
+
+const StyledEditButton = styled.button`
+  width: 20%;
+  margin: 0 auto;
+  border: 2px solid black;
+  background-color: white;
+  box-shadow: 5px 5px black;
+  transition: all 0.3s ease-in;
+  padding: 0.5rem;
+  cursor: pointer;
+  &:hover {
+    border: solid 2px grey;
+    box-shadow: 5px 5px grey;
+  }
+  &:active {
+    transform: translateY(4px);
+    transition-duration: 0.05s;
+  }
+`;
+
+const StyledTextArea = styled.textarea`
+  height: 200px;
 `;
 
 export { FavouriteMealCard };

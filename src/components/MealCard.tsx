@@ -77,13 +77,13 @@ const StyledCard = styled.article`
 const StyledButton = styled.button`
   width: fit-content;
   margin: 0 auto;
-  background-color: #74716f;
-  color: #ffffff;
-  border: none;
+  background-color: white;
+  box-shadow: 5px 5px black;
   padding: 0.5rem;
   transition: all 0.3s ease-in;
   &:hover {
-    background-color: #bebebe;
+    border: solid 2px grey;
+    box-shadow: 5px 5px grey;
   }
   &:active {
     transform: translateY(4px);
